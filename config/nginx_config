@@ -1,10 +1,12 @@
 server {
     # listen 443; #<-- Eventually
-    listen 80;
-    server_name FILLMEINLATER;
+    listen 80 default_server;
+    # server_name FILLMEINLATER;
+    root /home/kobra/Dev/the-pudding/public;
 
     index index.php;
     location / {
         try_files $uri $uri/ =404;
     }
+    include nginx_php;
 }
