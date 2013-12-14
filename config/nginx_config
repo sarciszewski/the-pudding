@@ -2,7 +2,7 @@ server {
     # listen 443; #<-- Eventually
     listen 80 default_server;
     # server_name FILLMEINLATER;
-    root /home/kobra/Dev/the-pudding/public;
+    root /var/www/public;
 
     index index.php;
     location / {
