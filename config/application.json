@@ -1,0 +1,12 @@
+{
+    "database" : [
+        {
+            "id": "1",
+            "name": "localdb",
+            "type": "mysql",
+            "host": "localhost",
+            "user": "testing",
+            "password": "q02fFrIIwRRG6eR8bpEK9imeVvqN"
+        }
+    ]
+}
