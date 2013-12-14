@@ -1,0 +1,10 @@
+server {
+    # listen 443; #<-- Eventually
+    listen 80;
+    server_name FILLMEINLATER;
+
+    index index.php;
+    location / {
+        try_files $uri $uri/ =404;
+    }
+}

@@ -3,4 +3,6 @@ CREATE TABLE `accounts` (
     `username` varchar(128),
     `passwordhash` varchar(128), -- scrypt
     `personas` text NOT NULL, -- 1|2|3|5|83, etc; used in REGEXP
+    PRIMARY KEY(`id`),
+    UNIQUE KEY(`username`)
 );
