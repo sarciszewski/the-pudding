@@ -13,7 +13,7 @@ fi
 
 # ============================================================================ #
 # _______________________________ DEPENDENCIES _______________________________ #
-apt-get install php5-dev php-pear php5-mcrypt php5-json
+apt-get install php5-dev php-pear php5-mcrypt php5-json nginx php5-mysql
 
 # scrypt is used for password hashing
 pecl install scrypt
