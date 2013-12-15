@@ -61,7 +61,8 @@ class CPHPRouter // extends CPHPBaseClass
 		{
 			if(strpos($requestpath, "?") !== false)
 			{
-				list($requestpath, $bogus) = explode("?", $requestpath, 2);
+				//list($requestpath, $bogus) = explode("?", $requestpath, 2);
+        $requestpath = array_shift(explode('?', $requestpath, 2));
 			}
 		}
 		
@@ -175,7 +176,7 @@ class CPHPRouter // extends CPHPBaseClass
       // Less repeating
       if($this->base_dir[strlen($this->base_dir)-1] != '/') {
         // Do we add a trailing slash
-        $destination .= '/';
+        $destination = '/'.$destination;
       }
       $destination = $this->base_dir.$destination;
     }

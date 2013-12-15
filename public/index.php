@@ -15,7 +15,12 @@ $router->routes = [[
       'target' => "index.php",
 			'_padded' => false
   ],
-	"^/sign-up$" => "signup.php",
+	//"^/sign-up$" => "signup.php",
+  "^/sign-up" => [
+    'target' => "error/guest.php",
+    'authenticator' => "authenticators/user.php",
+    'auth_error' => "signup.php"
+  ],
 	"^/about" => "about.php"
 ]];
 
