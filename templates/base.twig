@@ -4,6 +4,7 @@
     <title>{% block title %} {{ page_title|default('Untitled') }} {% endblock %}</title>
     <link rel="stylesheet" href="{{ "static/css/base.css"|cachebust }}" type="text/css" />
     {% block extra_css %}{% endblock %}
+    <script src="{{ "static/js/jquery.js"|cachebust }}"></script>
     {% block extra_js %}{% endblock %}
   </head>
   <body>
@@ -11,6 +12,7 @@
       <nav>
         <ul>
           <li><a href="/">Home</a></li>
+          <li><a href="/about/">About</a></li>
         </ul>
       </nav>
     </header>

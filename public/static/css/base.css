@@ -7,5 +7,22 @@ body {
   background-image:    -moz-linear-gradient(top, #000 0%, #111 100%);
   background-image:      -o-linear-gradient(top, #000 0%, #111 100%);
   background-image:         linear-gradient(top, #000 0%, #111 100%);
+  /* Fuck Internet Explorer. */
   color: #fff;
+}
+header {
+  background: #666; /* >:D */
+  height: 100px;
+  
+}
+nav {
+  
+}
+nav ul {
+  list-style: none;
+  margin: 0;
+}
+nav ul>li {
+  display: inline-block;
+  margin: 0;
 }
