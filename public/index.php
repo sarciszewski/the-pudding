@@ -16,7 +16,8 @@ $router->routes = [[
       'target' => "index.php",
 			'_padded' => false
   ],
-	"^/sign-up$" => "signup.php"
+	"^/sign-up$" => "signup.php",
+	"^/about" => "about.php"
 ]];
 
 try {
@@ -24,4 +25,5 @@ try {
 }
 catch (RouterException $e) {
   // 404
+  var_dump($e);
 }

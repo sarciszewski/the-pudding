@@ -28,9 +28,10 @@ $twig->addFilter(new Twig_SimpleFilter('cachebust', function($path) {
       $full = $_SERVER['DOCUMENT_ROOT'].$path;
     } else {
       $full = $path;
+      $path = '/'.$path;
     }
     if(file_exists($full)) {
-      return $path.'?'.hash_hmac('sha1', file_get_contents($path), filemtime($path));
+      return $path.'?'.hash_hmac('sha1', file_get_contents($full), filemtime($full));
     }
   }
   return $path.'?'.sha1(date('Ymd').$GLOBALS['ip']);
