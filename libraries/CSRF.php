@@ -4,6 +4,8 @@
  * if(CSRF::verify('unique_form_id', $_POST['csrf']))
  * or
  * if(CSRF::post('unique_form_id', 'csrf'))
+ * or
+ * if(CSRF::get('unique_form_id', 'csrf'))
  * 
  * to generate:
  * echo CSRF::generate("unique_form_id");
@@ -39,7 +41,7 @@ abstract class CSRF {
   
   public function generate($index) {
     $strong = false;
-    $_SESSION['csrfTokens']['index'] = openssl_random_pseudo_bytes(32, $strong);
+    $_SESSION['csrfTokens'][$index] = openssl_random_pseudo_bytes(32, $strong);
     if(!$strong) {
       // FUCK! Let's get inventive then...
       $fp = fopen("/dev/urandom", "rb");
