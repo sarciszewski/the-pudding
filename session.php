@@ -23,11 +23,15 @@ if(!file_exists('/tmp/ip_hash_key.key')) {
 $ip = hash_hmac('sha256', $_SERVER['REMOTE_ADDR'],
         file_get_contents('/tmp/ip_hash_key.key'));
 $newSession = !isset($_COOKIE[ini_get('session.name')]);
+$sid = null;
+if($newSession) {
+  $sid = $_COOKIE[ini_get('session.name')];
+}
 // It's kind of important to know if it's a new session or not
 /******************************************************************************/
 session_start();
 
-if($newSession) {
+if($newSession || session_id() !== $sid) {
   $_SESSION['canary'] = [
     'birth' => time()
   ];
@@ -41,6 +45,7 @@ if($newSession) {
     foreach(array_keys($_SESSION) as $i) {
       unset($_SESSION[$i]); // NO U
     }
+    //die("CANARY");
     session_regenerate_id(true);
     header("Location: /"); exit;
   } else {
@@ -49,6 +54,7 @@ if($newSession) {
       // If the hashed IP doesn't match our records, log everyone out.
       if(!slow_equals($_SESSION['canary']['ip'], $ip)) {
         // You are the weakest link. Good-bye!
+        //die("IP");
         foreach(array_keys($_SESSION) as $i) {
           unset($_SESSION[$i]); // NO U
         }
@@ -59,6 +65,7 @@ if($newSession) {
     if($settings['session']['regen_time'] > 0) {
       // Let's rotate our session ID every ___ seconds
       if(time() - $_SESSION['canary']['birth'] >= $settings['session']['regen_time']) {
+        //die("REGEN");
         $_SESSION['canary']['birth'] = time();
         session_regenerate_id(true);
       }

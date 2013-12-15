@@ -14,13 +14,27 @@ foreach(glob(__DIR__."/libraries/*.php") as $f) {
   require_once $f;
 }
 // Let's load twig
-require_once __DIR_."/libraries/Twig/Autoloader.php";
+require_once __DIR__."/libraries/Twig/Autoloader.php";
 Twig_Autoloader::register();
 
 $loader = new Twig_Loader_Filesystem(__DIR__.'/templates');
 $twig = new Twig_Environment($loader, [
   // 'cache' => __DIR__.'/cache'
 ]);
+
+$twig->addFilter(new Twig_SimpleFilter('cachebust', function($path) {
+  if(!preg_match('/^(https?|ftp)?:\/\//', $path)) {
+    if($path[0] == '/') {
+      $full = $_SERVER['DOCUMENT_ROOT'].$path;
+    } else {
+      $full = $path;
+    }
+    if(file_exists($full)) {
+      return $path.'?'.hash_hmac('sha1', file_get_contents($path), filemtime($path));
+    }
+  }
+  return $path.'?'.sha1(date('Ymd').$GLOBALS['ip']);
+}));
 
 // Load all of the settings:
 $settings = json_decode(file_get_contents(__DIR__.'/config/application.json'), true);
