@@ -2,8 +2,7 @@
 require_once "../universal.php";
 if($_SERVER['REQUEST_METHOD'] == 'POST') {
   if(!CSRF::post()) {
-    // CSRF detected
-    header("Location: /"); exit;
+    $_POST = []; // Empty array to you!
   }
 }
 

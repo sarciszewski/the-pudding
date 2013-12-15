@@ -125,7 +125,7 @@ class CPHPRouter // extends CPHPBaseClass
 								$sRouterAuthenticated = false;
 								$sRouterErrorDestination = $route_destination['auth_error'];
 								
-								require($route_destination['authenticator']);
+								require($this->baseDir($route_destination['authenticator']));
 								
 								if($sRouterAuthenticated === true)
 								{
@@ -157,15 +157,7 @@ class CPHPRouter // extends CPHPBaseClass
 						{
 							$destination = $route_destination;
 						}
-						if(!empty($this->base_dir)) {
-              // Less repeating
-              if($this->base_dir[strlen($this->base_dir)-1] != '/') {
-                // Do we add a trailing slash
-                $this->base_dir .= '/';
-              }
-              $destination = $this->base_dir.$destination;
-            }
-						include($destination);
+						include($this->baseDir($destination));
 						$found = true;
 					}
 				}
@@ -177,4 +169,16 @@ class CPHPRouter // extends CPHPBaseClass
 			throw new RouterException("No suitable route found");
 		}
 	}
+  public function baseDir($destination) {
+    // D.R.Y.
+    if(!empty($this->base_dir)) {
+      // Less repeating
+      if($this->base_dir[strlen($this->base_dir)-1] != '/') {
+        // Do we add a trailing slash
+        $destination .= '/';
+      }
+      $destination = $this->base_dir.$destination;
+    }
+    return $destination;
+  }
 }

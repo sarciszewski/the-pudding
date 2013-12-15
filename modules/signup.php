@@ -1,2 +1,5 @@
 <?php
-echo $twig->render('index.twig');
+if(!empty($_POST)) {
+  
+}
+echo $twig->render('signup.twig');
