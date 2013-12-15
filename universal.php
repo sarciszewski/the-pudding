@@ -10,9 +10,17 @@ require_once "HTMLPurifier.auto.php";
 $purifier = new HTMLPurifier();
 
 // Let's load all of the libraries:
-foreach(glob(__DIR__."/libraries/*") as $f) {
+foreach(glob(__DIR__."/libraries/*.php") as $f) {
   require_once $f;
 }
+// Let's load twig
+require_once __DIR_."/libraries/Twig/Autoloader.php";
+Twig_Autoloader::register();
+
+$loader = new Twig_Loader_Filesystem(__DIR__.'/templates');
+$twig = new Twig_Environment($loader, [
+  // 'cache' => __DIR__.'/cache'
+]);
 
 // Load all of the settings:
 $settings = json_decode(file_get_contents(__DIR__.'/config/application.json'), true);

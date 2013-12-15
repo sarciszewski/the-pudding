@@ -1,4 +1,5 @@
 {
+  "base_url" : "http://localhost",
   "database" : [
     {
       "id": "1",
