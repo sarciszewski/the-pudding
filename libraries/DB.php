@@ -4,16 +4,19 @@
  */
 class DB {
 	// PHP 5.4 and above, obviously:
-	protected $db = [];
+	public $db = [];
 	public function __construct($params = []) {
-		if(isset($params['database'])) {
+		if(isset($params)) {
   		// If we specify a 
-  		foreach($params['database'] as $d) {
-  			
+  		foreach($params as $d) {
+  			$this->addDB($d);
 			}
 		}
 	}
   public function addDB($d) {
+    if(!isset($d['id'])) {
+			trigger_error("Database ".cleanOut($d['id'])." already exists!", E_USER_NOTICE);
+    }
 		if(isset($this->db[$d['id']])) { 
 			trigger_error("Database ".cleanOut($d['id'])." already exists!", E_USER_NOTICE);
   		return;
@@ -48,8 +51,47 @@ class DB {
       return;
     }
   	// Now that we've finished with the foreplay, let's do a query!
-		
+    try {
+  		if(!empty($params)) {
+        // Prepare a statement
+        $st = $db->prepare($statement);
+        $st->execute($params);
+        return $st->fetchAll(PDO::FETCH_ASSOC);
+      } else {
+        // No params, just do a normal query then
+        $res = [];
+        foreach($db->query($statement, PDO::FETCH_ASSOC) as $r) {
+          $res[] = $r;
+        }
+        return $res;
+      }
+    } catch(Exception $e) {
+      var_dump($e->getMessage());
+    }
 	}
+  // Add a key to a table in each database
+  public function insert($table, $properties = []) {
+    $query = 'INSERT INTO '.$table.' (';
+    $params = null;
+    $post = [];
+    if(!empty($properties)) {
+      $query .= implode(', ', array_keys($properties));
+      $params = array_values($properties);
+      for($i = 0; $i < count($params); ++$i) {
+        $post[] = '?';
+      }
+    }
+    $query .= ') VALUES ('.implode(', ', $post).');';
+    
+    $success = true;
+    foreach(array_keys($this->db) as $db) {
+      $round = $this->query($query, $params, $db);
+      if(!$round) {
+        $success = false;
+        var_dump($round);
+      }
+    }
+  }
   protected function _selectdb() {
   	// TODO: Determine which DB has the least load, then select that one
     // Not a high priority; most people will only deploy with 1

@@ -3,7 +3,7 @@
   "database" : [
     {
       "id": "1",
-      "name": "localdb",
+      "name": "devserver",
       "type": "mysql",
       "host": "localhost",
       "user": "testing",

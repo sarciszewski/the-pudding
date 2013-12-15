@@ -33,22 +33,23 @@ class Upload {
          isset($fileIndex['size'])) {
          throw new Exception("You tried to pass a \$_FILES array, not the index. Don't do that!");
       }
-      throw new Exception("No \$_FILES value found for index: '".safeOut($fileIndex)."'");
+      throw new Exception("No \$_FILES value found for index: '".cleanOut($fileIndex)."'");
     }
+    $DB =& $GLOBALS['DB'];
     $f =& $_FILES[$fileIndex];
     switch($f['error']) {
       case UPLOAD_ERR_NO_FILE:
         return null; // No exception needed
       case UPLOAD_ERR_FORM_SIZE:
       case UPLOAD_ERR_INI_SIZE:
-        throw new UploadException("File <u>".safeOut($fileIndex)."</u> is to large to be uploaded through our form.");
+        throw new UploadException("File <u>".cleanOut($fileIndex)."</u> is to large to be uploaded through our form.");
       case UPLOAD_ERR_PARTIAL:
-        throw new UploadException("File <u>".safeOut($fileIndex)."</u> was only partially received. Please check your network and try again.");
+        throw new UploadException("File <u>".cleanOut($fileIndex)."</u> was only partially received. Please check your network and try again.");
       case UPLOAD_ERR_NO_TMP_DIR:
-        throw new UploadException("File <u>".safeOut($fileIndex)."</u> could not be uploaded because the temporary file directory does not exist.");
+        throw new UploadException("File <u>".cleanOut($fileIndex)."</u> could not be uploaded because the temporary file directory does not exist.");
       case UPLOAD_ERR_EXTENSION:
       case UPLOAD_ERR_CANT_WRITE:
-        throw new UploadException("File <u>".safeOut($fileIndex)."</u> could not be uploaded.");
+        throw new UploadException("File <u>".cleanOut($fileIndex)."</u> could not be uploaded.");
     }
     // It should be UPLOAD_ERR_OK :)
     if(!empty($MIME_WhiteList)) {
@@ -59,6 +60,7 @@ class Upload {
     if(!$this->ext_test($f['name'], $extensions)) {
       throw new UploadException("Illegal file extension");
     }
+    
   }
   
   public function ext_test($filename, $extensions) {
