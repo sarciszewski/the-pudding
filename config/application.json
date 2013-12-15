@@ -1,12 +1,16 @@
 {
-    "database" : [
-        {
-            "id": "1",
-            "name": "localdb",
-            "type": "mysql",
-            "host": "localhost",
-            "user": "testing",
-            "password": "q02fFrIIwRRG6eR8bpEK9imeVvqN"
-        }
-    ]
+  "database" : [
+    {
+      "id": "1",
+      "name": "localdb",
+      "type": "mysql",
+      "host": "localhost",
+      "user": "testing",
+      "password": "q02fFrIIwRRG6eR8bpEK9imeVvqN"
+    }
+  ],
+  "session" : {
+    "bind_to_ip": true,
+    "regen_time": 900
+  }
 }
