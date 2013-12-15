@@ -11,9 +11,8 @@ body {
   color: #fff;
 }
 header {
-  background: #666; /* >:D */
-  height: 100px;
-  
+  /*background: #666;
+  height: 100px;*/
 }
 nav {
   
@@ -21,6 +20,7 @@ nav {
 nav ul {
   list-style: none;
   margin: 0;
+  padding: 0;
 }
 nav ul>li {
   display: inline-block;

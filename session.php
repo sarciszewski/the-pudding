@@ -24,7 +24,7 @@ $ip = hash_hmac('sha256', $_SERVER['REMOTE_ADDR'],
         file_get_contents('/tmp/ip_hash_key.key'));
 $newSession = !isset($_COOKIE[ini_get('session.name')]);
 $sid = null;
-if($newSession) {
+if(!$newSession) {
   $sid = $_COOKIE[ini_get('session.name')];
 }
 // It's kind of important to know if it's a new session or not

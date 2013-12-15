@@ -14,14 +14,9 @@ abstract class CSRF {
   public function verify($index, $hash) {
     if(empty($_SESSION['csrfTokens'][$index])) {
       // They never loaded the page before!
-      return slow_equals('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab',
-        hash_hmac('sha256', $_SERVER['REMOTE_ADDR'], 
-          'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa') );
-        // Constant time failure
+      return false;
     } else {
-      return slow_equals($hash, hash_hmac('sha256', $_SERVER['REMOTE_ADDR'], 
-        $_SESSION['csrfTokens'][$index]) );
-      // Constant time failure
+      return $hash === hash_hmac('sha256', $_SERVER['REMOTE_ADDR'], $_SESSION['csrfTokens'][$index]);
     }
   }
   
