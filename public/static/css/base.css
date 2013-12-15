@@ -10,6 +10,12 @@ body {
   /* Fuck Internet Explorer. */
   color: #fff;
 }
+a {
+  color: #0cf;
+}
+a:visited {
+  color: #09c;
+}
 header {
   /*background: #666;
   height: 100px;*/

@@ -45,7 +45,8 @@ function render($template = 'wrapper.twig', $params = '') {
     $vars['user'] = [
       'is_authenticated' => false,
       'id' => 0,
-      'username' => null
+      'username' => null,
+      'active_persona' => null
     ];
   } else {
     $vars['user'] = $_SESSION['user'];

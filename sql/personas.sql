@@ -4,7 +4,12 @@ CREATE TABLE `personas` (
    `accounts` text NOT NULL, -- People who can use this persona
    `username` varchar(255) NOT NULL,
    `bio` text NOT NULL,
-    `gpgkey` text, -- Optional but highly recommended
-    PRIMARY KEY(`id`),
-    KEY(`username`)
+   `gpgkey` text, -- Optional but highly recommended
+   PRIMARY KEY(`id`),
+   KEY(`username`)
+);
+INSERT INTO `personas` (
+  `username`, `admins`, `accounts`, `bio`
+) VALUES (
+  'Anonymous', '1', '.*', 'Universally accessible account'
 );

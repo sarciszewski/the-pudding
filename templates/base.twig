@@ -18,6 +18,13 @@
           <li><a href="/bbs/">Message Board</a></li>
           <li><a href="/media/">Media</a></li>
         </ul>
+        <ul class="pull-right">
+          {% if user.is_authenticated %}
+          <li><a href="/manage/">Control Panel</a></li>
+          <li><a href="/manage/persona">{{ user.active_persona }}</a></li>
+          {% else %}
+          {% endif %}
+        </ul>
       </nav>
     </header>
     <div id="content">

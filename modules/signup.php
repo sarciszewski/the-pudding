@@ -6,7 +6,7 @@ if(!empty($_POST)) {
   }
 }
 if(!empty($error)) {
-  render('signup.twig', ['error' => $error]);
+  render('signup.twig', ['message' => $error]);
 } else {
   render('signup.twig');
 }
