@@ -19,14 +19,14 @@ if(!file_exists('/tmp/ip_hash_key.key')) {
     die("Website offline. Please make daily IP key overwriteable.");
   }
 }
-// Use this instead
+
 $ip = hash_hmac('sha256', $_SERVER['REMOTE_ADDR'],
         file_get_contents('/tmp/ip_hash_key.key'));
-$newSession = false;
-if(isset($_COOKIE[ini_get('session.name')])) {
-  $newSession = true;
-}
+$newSession = !isset($_COOKIE[ini_get('session.name')]);
+// It's kind of important to know if it's a new session or not
+/******************************************************************************/
 session_start();
+
 if($newSession) {
   $_SESSION['canary'] = [
     'birth' => time()
@@ -65,3 +65,6 @@ if($newSession) {
     } // <- end if($settings['session']['regen_time'])
   } // <- end else for if(empty($_SESSION['canary']))
 } // end else for if($newSession)
+if(empty($_SESSION['csrfTokens'])) {
+  $_SESSION['csrfTokens'] = [];
+}
