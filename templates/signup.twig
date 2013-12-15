@@ -1,17 +1,30 @@
 {% extends "base.twig" %}
 {% block content %}
 <h1> Signup </h1>
-<form method="post">
+<form method="post" onsubmit="return checkForm();">
   {% for x in message %}
     {{ x }}
   {% endfor %}
   <label for="username">Username: </label>
-  <input type="text" id="username" name="username" value="{{ post.username|e }}" /><br />
+  <input type="text" id="username" name="username" value="{{ post.username|e }}" required="required" /><br />
   <label for="password">Password: </label>
-  <input type="password" id="password" name="password" /><br />
+  <input type="password" id="password" name="password" required="required" pattern=".{16,32768}" />
+  (16 to 32,768 characters)
+  <br />
+  <label for="password2">Confirm: </label>
+  <input type="password" id="password2" name="password2" required="required" pattern=".{16,32768}" />
+  <br />
   <button>
     Register
   </button>
   {{ insert_token() }}
 </form>
+<script>
+  function checkForm() {
+    if($("#password").val() !== $("#password2").val()) {
+      alert("Your passwords do not match");
+      return false;
+    }
+  }
+</script>
 {% endblock %}

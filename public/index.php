@@ -1,10 +1,11 @@
 <?php
 require_once "../universal.php";
+/*
 if($_SERVER['REQUEST_METHOD'] == 'POST') {
   if(!CSRF::post()) {
     $_POST = []; // Empty array to you!
   }
-}
+}*/
 
 $router = new CPHPRouter($settings['module_dir']);
 $router->allow_slash = true;
