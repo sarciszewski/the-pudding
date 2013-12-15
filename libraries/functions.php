@@ -23,18 +23,3 @@ function slow_equals($a, $b) {
     }
     return $diff === 0; 
 }
-
-function forceASCII($in, $allow_linebreaks=false) {
-  // Remove non-ASCII characters
-  if($allow_linebreaks) {
-    $a = explode("\n", $in);
-    foreach($a as $i => $n) {
-      $a[$i] = forceASCII($n);
-    }
-    return trim(implode("\n", $a));
-  } else {
-    // Return all printable ASCII characters 32 to 126
-    // Not compatible with other languages (Chinese, Russian, etc.)
-    return preg_replace('/([^\x20-\x7e]+)/', '', $in);
-  }
-}
