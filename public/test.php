@@ -1,7 +1,7 @@
 <?php
 require_once "../universal.php";
 if(!empty($_POST)) {
-  if(CSRF::post('formIDgoeshere', 'csrf')) {
+  if(CSRF::post()) {
     echo "VALID";
   } else {
     echo "INVALID";
@@ -9,6 +9,6 @@ if(!empty($_POST)) {
 }
   ?>
 <form method="post">
-  <input type="hidden" name="csrf" value="<?=CSRF::generate('formIDgoeshere'); ?>" />
+  <?php CSRF::insert(); ?>
   <button>Submit</button>
 </form>

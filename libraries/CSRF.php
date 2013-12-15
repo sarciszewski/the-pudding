@@ -14,24 +14,34 @@ abstract class CSRF {
   public function verify($index, $hash) {
     if(empty($_SESSION['csrfTokens'][$index])) {
       // They never loaded the page before!
-      return false;
-    } else {
-      return $hash === hash_hmac('sha256', $_SERVER['REMOTE_ADDR'], $_SESSION['csrfTokens'][$index]);
+    } elseif( $hash === hash_hmac('sha256', $_SERVER['REMOTE_ADDR'], $_SESSION['csrfTokens'][$index])) {
+      unset($_SESSION['csrfTokens'][$index]);
+      return true;
     }
+    return false;
   }
   
-  public function post($post_index, $session_index) {
-    if(empty($_POST[$post_index]) || is_array($_POST[$post_index])) {
-      $_POST[$post_index] = bin2hex(mcrypt_create_iv(32)); // Random garbage
-    }
-    return self::verify($session_index, $_POST[$post_index]);
+  public function post($req_index = null, $session_index = null) {
+    return self::req_helper($_POST, $req_index, $session_index);
   }
   
-  public function get($post_index, $session_index) {
-    if(empty($_GET[$post_index]) || is_array($_GET[$post_index])) {
-      $_GET[$post_index] = bin2hex(mcrypt_create_iv(32)); // Random garbage
+  public function get($req_index = null, $session_index = null) {
+    return self::req_helper($_GET, $req_index, $session_index);
+  }
+  
+  public function req_helper($array, $req_index, $session_index) {
+    if(empty($req_index)) {
+      $req_index = '_CSRF_TOKEN';
     }
-    return self::verify($session_index, $_GET[$post_index]);
+    if(empty($session_index)) {
+      if(isset($array['_CSRF_KEY'])) {
+        $session_index = $array['_CSRF_KEY'];
+      }
+    }
+    if(empty($_POST[$req_index]) || is_array($_POST[$req_index])) {
+      $_POST[$req_index] = bin2hex(mcrypt_create_iv(32)); // Random garbage
+    }
+    return self::verify($session_index, $_POST[$req_index]);
   }
   
   public function generate($index) {
@@ -47,5 +57,11 @@ abstract class CSRF {
       fclose($fp);
     }
     return hash_hmac('sha256', $_SERVER['REMOTE_ADDR'], $_SESSION['csrfTokens'][$index]);
+  }
+  public function insert() {
+    $index = base64_encode(mcrypt_create_iv(15, MCRYPT_DEV_URANDOM));
+    $hmac = self::generate($index);
+    echo "<input type=\"hidden\" name=\"_CSRF_KEY\" value=\"".$index."\" />\n";
+    echo "<input type=\"hidden\" name=\"_CSRF_TOKEN\" value=\"".$hmac."\" />\n";
   }
 }
