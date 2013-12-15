@@ -44,7 +44,7 @@ class DB {
   	} elseif(isset($this->db[$force_db])) {
       $db =& $this->db[$force_db];
 		} else {
-  		trigger_error("Database not found!", E_USER_ERROR);
+  		trigger_error("Database ".cleanOut($force_db)." not found!", E_USER_ERROR);
       return;
     }
   	// Now that we've finished with the foreplay, let's do a query!

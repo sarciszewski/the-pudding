@@ -7,6 +7,7 @@
 
 // PEAR: HTMLPurifier (see install.sh)
 require_once "HTMLPurifier.auto.php";
+$purifier = new HTMLPurifier();
 
 // Let's load all of the libraries:
 foreach(glob(__DIR__."/libraries/*") as $f) {
