@@ -31,13 +31,7 @@ CREATE TABLE `stream_channel` (
     `stream_id` varchar(128) NOT NULL,
     `live` tinyint(1) unsigned DEFAULT 0,
     PRIMARY KEY(`id`),
-    FOREIGN KEY(`event`)
-        REFERENCES `stream_events`.`id`
-        ON UPDATE CASCADE ON DELETE RESTRICT,
-    FOREIGN KEY(`account`)
-        REFERENCES `accounts`.`id`
-        ON UPDATE CASCADE ON DELETE RESTRICT,
-    FOREIGN KEY(`provider`)
-        REFERENCES `stream_providers`.`id`
-        ON UPDATE CASCADE ON DELETE RESTRICT
+    KEY(`event`),
+    KEY(`account`),
+    KEY(`provider`)
 );
