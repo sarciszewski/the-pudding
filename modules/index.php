@@ -8,3 +8,8 @@ $i = $DB->insert('accounts', [
 ]);
 var_dump($i);
 var_dump($settings['database']);
+
+$u = $DB->update('accounts', [
+  'username' => 'joepie91'
+], ['id' => 1]);
+var_dump($u);

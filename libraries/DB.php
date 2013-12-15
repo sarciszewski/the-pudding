@@ -5,6 +5,7 @@
 class DB {
 	// PHP 5.4 and above, obviously:
 	public $db = [];
+  public $errors = [];
 	public function __construct($params = []) {
 		if(isset($params)) {
   		// If we specify a 
@@ -55,8 +56,12 @@ class DB {
   		if(!empty($params)) {
         // Prepare a statement
         $st = $db->prepare($statement);
-        $st->execute($params);
-        return $st->fetchAll(PDO::FETCH_ASSOC);
+        $pass = $st->execute($params);
+        if(stripos($statement, 'SELECT') !== false) {
+          return $st->fetchAll(PDO::FETCH_ASSOC);
+        } else {
+          return $pass;
+        }
       } else {
         // No params, just do a normal query then
         $res = [];
@@ -88,9 +93,49 @@ class DB {
       $round = $this->query($query, $params, $db);
       if(!$round) {
         $success = false;
-        var_dump($round);
       }
     }
+    return $success;
+  }
+  // Update table
+  public function update($table, $properties, $where = []) {
+    if(empty($properties)) {
+      return false; // Nothing to update
+    }
+    $query = 'UPDATE '.$table.' SET ';
+    $params = array_values($properties);
+    $post = [];
+    foreach(array_keys($properties) as $key) {
+      $post[] = "{$key} = ?";
+    }
+    $query .= implode(', ', $post);
+    if(empty($where)) {
+      $query .= ' 1';
+    } elseif(is_array($where)) {
+      $query .= ' WHERE ';
+      $params = array_values($properties);
+      $post = [];
+      foreach($properties as $key => $val) {
+        $post[] = "{$key} = ?";
+        $params[] = $val;
+      }
+      $query .= implode(' AND ', $post);
+    } elseif(is_string($where)) {
+      if(!strpos($where, 'WHERE ')) {
+        $query .= ' WHERE ';
+      }
+      $query .= $where;
+    }
+    $success = true;
+    echo "{$query}\n";
+    var_dump($params);
+    foreach(array_keys($this->db) as $db) {
+      $round = $this->query($query, $params, $db);
+      if(!$round) {
+        $success = false;
+      }
+    }
+    return $success;
   }
   protected function _selectdb() {
   	// TODO: Determine which DB has the least load, then select that one
