@@ -37,3 +37,26 @@ function extract_globals()
     
     return "global " . join(",", $vars) . ";";
 }
+function render($template = 'wrapper.twig', $params = '') {
+  $vars = [];
+  $vars['post'] =& $_POST;
+  $vars['get'] =& $_GET;
+  if(empty($_SESSION['user'])) {
+    $vars['user'] = [
+      'is_authenticated' => false,
+      'id' => 0,
+      'username' => null
+    ];
+  } else {
+    $vars['user'] = $_SESSION['user'];
+  }
+  if(is_array($params)) {
+    foreach($params as $key => $value) {
+      $vars[$key] = $value;
+    }
+  } else {
+    $vars['wrapped'] = $params;
+  }
+  echo $GLOBALS['twig']->render($template, $vars);
+  exit;
+}

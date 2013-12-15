@@ -37,6 +37,10 @@ $twig->addFilter(new Twig_SimpleFilter('cachebust', function($path) {
   return $path.'?'.sha1(date('Ymd').$GLOBALS['ip']);
 }));
 
+$twig->addFunction(new Twig_SimpleFunction('insert_token', function() {
+  return CSRF::insert();
+}));
+
 // Load all of the settings:
 $settings = json_decode(file_get_contents(__DIR__.'/config/application.json'), true);
 

@@ -1,5 +1,12 @@
 <?php
 if(!empty($_POST)) {
-  
+  $error = [];
+  if($DB->single("SELECT count(id) FROM accounts WHERE username = ?", [$_POST['username']] )) {
+    $error[] = cleanOut($_POST['username'])." is already in use!";
+  }
 }
-echo $twig->render('signup.twig');
+if(!empty($error)) {
+  render('signup.twig', ['error' => $error]);
+} else {
+  render('signup.twig');
+}

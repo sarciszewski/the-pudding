@@ -74,7 +74,15 @@ class DB {
       var_dump($e->getMessage());
     }
 	}
-  // Add a key to a table in each database
+  // Pull the first column of the first row; meant for SELECT COUNT(id)
+  public function single($statement, $params = [], $force_db = null) {
+    $q = $this->query($statement, $params, $force_db);
+    while(is_array($q)) {
+      $q = array_shift($q);
+    }
+    return $q;
+  }
+  // INSERT A ROW
   public function insert($table, $properties = []) {
     $query = 'INSERT INTO '.$table.' (';
     $params = null;
@@ -97,6 +105,7 @@ class DB {
     }
     return $success;
   }
+  // DELETE A ROW
   public function delete($table, $where = []) {
     if(empty($where)) {
       return false; // Nothing to delete
