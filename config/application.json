@@ -14,5 +14,6 @@
   "session" : {
     "bind_to_ip": true,
     "regen_time": 900
-  }
+  },
+  "upload_dir": "/var/www/uploads"
 }
