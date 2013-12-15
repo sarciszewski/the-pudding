@@ -23,3 +23,17 @@ function slow_equals($a, $b) {
     }
     return $diff === 0; 
 }
+
+// https://github.com/joepie91/cphp/blob/feature/orm-uuid/include.misc.php
+// https://twitter.com/joepie91
+// http://cryto.net
+function extract_globals()
+{
+    $vars = array();
+    
+    foreach($GLOBALS as $key => $value){
+        $vars[] = "$".$key;
+    }
+    
+    return "global " . join(",", $vars) . ";";
+}

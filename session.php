@@ -45,8 +45,13 @@ if($newSession || session_id() !== $sid) {
     foreach(array_keys($_SESSION) as $i) {
       unset($_SESSION[$i]); // NO U
     }
-    //die("CANARY");
     session_regenerate_id(true);
+    $_SESSION['canary'] = [
+      'birth' => time()
+    ];
+    if($settings['session']['bind_to_ip']) {
+      $_SESSION['canary']['ip'] = $ip;
+    }
     header("Location: /"); exit;
   } else {
     // Let's verify our canary values!
@@ -54,7 +59,7 @@ if($newSession || session_id() !== $sid) {
       // If the hashed IP doesn't match our records, log everyone out.
       if(!slow_equals($_SESSION['canary']['ip'], $ip)) {
         // You are the weakest link. Good-bye!
-        //die("IP");
+        die("IP");
         foreach(array_keys($_SESSION) as $i) {
           unset($_SESSION[$i]); // NO U
         }
@@ -65,7 +70,7 @@ if($newSession || session_id() !== $sid) {
     if($settings['session']['regen_time'] > 0) {
       // Let's rotate our session ID every ___ seconds
       if(time() - $_SESSION['canary']['birth'] >= $settings['session']['regen_time']) {
-        //die("REGEN");
+        die("REGEN");
         $_SESSION['canary']['birth'] = time();
         session_regenerate_id(true);
       }

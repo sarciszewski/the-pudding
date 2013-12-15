@@ -10,6 +10,7 @@
       "password": "q02fFrIIwRRG6eR8bpEK9imeVvqN"
     }
   ],
+  "module_dir": "/var/www/modules",
   "session" : {
     "bind_to_ip": true,
     "regen_time": 900

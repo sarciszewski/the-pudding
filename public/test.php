@@ -1,5 +1,5 @@
 <?php
-require_once "/var/www/universal.php";
+require_once "../universal.php";
 if(!empty($_POST)) {
   if(CSRF::post('formIDgoeshere', 'csrf')) {
     echo "VALID";
