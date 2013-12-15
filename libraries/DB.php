@@ -97,6 +97,34 @@ class DB {
     }
     return $success;
   }
+  public function delete($table, $where = []) {
+    if(empty($where)) {
+      return false; // Nothing to delete
+    }
+    $query = 'DELETE FROM '.$table.'WHERE ';
+    $params = [];
+    if(is_array($where)) {
+      foreach($where as $key => $val) {
+        $post[] = "{$key} = ?";
+        $params[] = $val;
+      }
+      $query .= implode(' AND ', $post);
+    } elseif(is_string($where)) {
+      if(!strpos($where, 'WHERE ')) {
+        $query .= ' WHERE ';
+      }
+      $query .= $where;
+    }
+    $success = true;
+    
+    foreach(array_keys($this->db) as $db) {
+      $round = $this->query($query, $params, $db);
+      if(!$round) {
+        $success = false;
+      }
+    }
+    return $success;
+  }
   // Update table
   public function update($table, $properties, $where = []) {
     if(empty($properties)) {
@@ -113,9 +141,8 @@ class DB {
       $query .= ' 1';
     } elseif(is_array($where)) {
       $query .= ' WHERE ';
-      $params = array_values($properties);
       $post = [];
-      foreach($properties as $key => $val) {
+      foreach($where as $key => $val) {
         $post[] = "{$key} = ?";
         $params[] = $val;
       }
@@ -127,8 +154,7 @@ class DB {
       $query .= $where;
     }
     $success = true;
-    echo "{$query}\n";
-    var_dump($params);
+    
     foreach(array_keys($this->db) as $db) {
       $round = $this->query($query, $params, $db);
       if(!$round) {
